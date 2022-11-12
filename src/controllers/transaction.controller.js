@@ -2,9 +2,10 @@ const db = require('../models');
 const Transaction = db.transaction;
 const vaHandler = require('../utils/generateVa');
 const { nanoid } = require('../config/nanoid.config');
+const getLimitedData = require('../utils/getTransactionLimitedData');
 
 const createTransaction = async (req, res, next) => {
-  const transactionId = `TRC-${nanoid()}`;  
+  const transactionId = `TRC-${nanoid(16)}`;  
   const { vendorName, customerName, total, notificationUrl='' } = req.body;    
   
   try {
@@ -22,11 +23,13 @@ const createTransaction = async (req, res, next) => {
       updatedAt: new Date().toISOString(),
     });    
 
+    const transactionData = getLimitedData(transaction);
+
     return res.status(200).json({
       success: true,
       message: 'new transaction created',
       results: {
-        transaction
+        ...transactionData
       },
     })
   } catch (error) {
@@ -46,18 +49,48 @@ const getTransactions = async (req, res, next) => {
 
     if(!transaction) return next('404,Transaction not found');
 
-    const {vendorName, customerName, total, createdAt, updatedAt} = transaction;
+    const transactionData = getLimitedData(transaction);
 
     return res.status(200).json({
       success: true,
       message: 'Success get transaction',
       results: {
-        createdAt,
-        updatedAt,
-        transactionId,
-        vendorName,
-        customerName,
-        total,
+        ...transactionData,
+      },
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
+const confirmTransaction = async (req, res, next) => {
+  const { transactionId } = req.params;
+  try {    
+    const status = true;
+
+    const transaction = await Transaction.findOne({
+      where:{
+        transactionId
+      }
+    })
+
+    if(!transaction) return next('404,Transaction not found');
+
+    const updateTransaction = await Transaction.update({
+      status
+    },{
+      where:{
+        transactionId
+      }
+    })    
+
+    const transactionData = getLimitedData(updateTransaction);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Success pay transaction',
+      results: {
+        ...transactionData
       },
     })
   } catch (error) {
@@ -68,5 +101,5 @@ const getTransactions = async (req, res, next) => {
 module.exports = {
   getTransactions,
   createTransaction,  
-  // confirmTransaction,
+  confirmTransaction,
 }
