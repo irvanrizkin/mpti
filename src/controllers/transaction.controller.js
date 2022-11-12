@@ -1,6 +1,6 @@
 const db = require('../models');
 const Transaction = db.transaction;
-const Product = db.product;
+const vaHandler = require('../utils/generateVa');
 const nanoid = require('../config/nanoid.config');
 
 const createTransaction = async (req, res, next) => {
@@ -8,7 +8,7 @@ const createTransaction = async (req, res, next) => {
   const { vendorName, customerName, total, notificationUrl='' } = req.body;    
   
   try {
-    const vas = generateVa();
+    const payCodes = vaHandler();
 
     const transaction = await Transaction.create({      
       transactionId,
@@ -16,7 +16,7 @@ const createTransaction = async (req, res, next) => {
       customerName,      
       total,
       notificationUrl,
-      ...vas,
+      ...payCodes,
       status: 'unpaid',      
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

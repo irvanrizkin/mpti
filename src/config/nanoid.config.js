@@ -3,5 +3,22 @@ const nanoid = customAlphabet(
   "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
   16
 );
+const nanoidNumber = (size) => {
+  return customAlphabet(
+    "0123456789",
+    size
+  );
+}
 
-module.exports = nanoid;
+const nanoidAlpha = (size) => {
+  return customAlphabet(
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    size
+  );
+}
+
+module.exports = {
+  nanoid, 
+  nanoidNumber,
+  nanoidAlpha
+};
