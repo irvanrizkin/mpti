@@ -1,7 +1,8 @@
 const transaction = require('../controllers/transaction.controller');
 const router = require('express').Router();
 
-router.post('/create', jwtMiddleware, transaction.createTransaction);
+router.post('/create', transaction.createTransaction);
+router.get('/:transactionId', transaction.createTransaction);
 
 
 module.exports = router;
