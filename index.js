@@ -8,6 +8,8 @@ app.use(cors());
 
 const transactionRoutes = require('./src/routes/transaction.route');
 
+const errorHandler = require('./src/utils/errorHandler');
+
 app.use(express.json());
 
 app.get('/', (_, res) => {
@@ -20,6 +22,8 @@ app.get('/', (_, res) => {
 });
 
 app.use('/transaction', transactionRoutes);
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
