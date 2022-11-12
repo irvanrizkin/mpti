@@ -84,13 +84,14 @@ const confirmTransaction = async (req, res, next) => {
       }
     })    
 
-    const transactionData = getLimitedData(updateTransaction);
+    const transactionData = getLimitedData(transaction);
 
     return res.status(200).json({
       success: true,
       message: 'Success pay transaction',
       results: {
-        ...transactionData
+        ...transactionData,
+        status
       },
     })
   } catch (error) {
