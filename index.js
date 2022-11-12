@@ -6,6 +6,8 @@ const app = express();
 
 app.use(cors());
 
+const transactionRoutes = require('./src/routes/transaction.route');
+
 app.use(express.json());
 
 app.get('/', (_, res) => {
@@ -17,7 +19,7 @@ app.get('/', (_, res) => {
   );
 });
 
-app.use(errorHandler)
+app.use('/transaction', transactionRoutes);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
