@@ -1,0 +1,54 @@
+'use strict';
+
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('transaction', {
+      transactionId: {
+        type: Sequelize.STRING(16),
+        primaryKey: true,
+      },
+      vendorName: {
+        type: Sequelize.STRING,
+      },
+      customerName: {
+        type: Sequelize.STRING,
+      },      
+      total: {
+        type: Sequelize.INTEGER,
+      },
+      notificationUrl: {
+        type: Sequelize.STRING,
+      },
+      bcaVa: {
+        type: Sequelize.STRING,
+      },
+      bniVa: {
+        type: Sequelize.STRING,
+      },
+      briVa: {
+        type: Sequelize.STRING,
+      },
+      mandiriVa: {
+        type: Sequelize.STRING,
+      },
+      alfamartCode: {
+        type: Sequelize.STRING,
+      },
+      indomartCode: {
+        type: Sequelize.STRING,
+      },
+      brilinkCode: {
+        type: Sequelize.STRING,
+      },
+      createdAt: {
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        type: Sequelize.DATE
+      },
+    });
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('transaction');
+  }
+};
