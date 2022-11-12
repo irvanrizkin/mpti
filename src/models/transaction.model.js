@@ -37,6 +37,9 @@ module.exports = (sequelize, Sequelize) => {
       brilinkCode: {
         type: Sequelize.STRING,
       },
+      status: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         type: Sequelize.DATE
       },
