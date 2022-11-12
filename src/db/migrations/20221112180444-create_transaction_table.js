@@ -2,7 +2,7 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('transaction', {
+    await queryInterface.createTable('transactions', {
       transactionId: {
         type: Sequelize.STRING(16),
         primaryKey: true,
@@ -40,6 +40,9 @@ module.exports = {
       brilinkCode: {
         type: Sequelize.STRING,
       },
+      status: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         type: Sequelize.DATE
       },
@@ -49,6 +52,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('transaction');
+    await queryInterface.dropTable('transactions');
   }
 };

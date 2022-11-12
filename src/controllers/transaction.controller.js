@@ -4,7 +4,7 @@ const vaHandler = require('../utils/generateVa');
 const { nanoid } = require('../config/nanoid.config');
 
 const createTransaction = async (req, res, next) => {
-  const transactionId = `TRC${nanoid()}`;  
+  const transactionId = `TRC-${nanoid()}`;  
   const { vendorName, customerName, total, notificationUrl='' } = req.body;    
   
   try {
@@ -17,7 +17,7 @@ const createTransaction = async (req, res, next) => {
       total,
       notificationUrl,
       ...payCodes,
-      status: 'unpaid',      
+      status: false,         
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });    
