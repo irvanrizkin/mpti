@@ -19,6 +19,7 @@ cd mpti
 npm install
 cp env.example .env
 # Edit the .env first before running
+npx sequelize-cli db:migrate
 node index.js
 ```
 
