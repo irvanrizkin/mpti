@@ -3,6 +3,7 @@ const Transaction = db.transaction;
 const vaHandler = require('../utils/generateVa');
 const { nanoid } = require('../config/nanoid.config');
 const getLimitedData = require('../utils/getTransactionLimitedData');
+const getVaHandler = require('../utils/getVa');
 
 const createTransaction = async (req, res, next) => {
   const transactionId = `TRC-${nanoid(16)}`;  
@@ -63,6 +64,34 @@ const getTransactions = async (req, res, next) => {
   }
 }
 
+const getVa = async (req, res, next) => {
+  const { transactionId, paymentMethod } = req.params;
+  try {    
+
+    const transaction = await Transaction.findOne({
+      where:{
+        transactionId
+      }
+    })
+
+    if(!transaction) return next('404,Transaction not found');
+
+    const va = getVaHandler(transaction,paymentMethod);
+    const transactionData = getLimitedData(transaction);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Success get va number',
+      results: {
+        ...transactionData,
+        virtualAccount: va        
+      },
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
 const confirmTransaction = async (req, res, next) => {
   const { transactionId } = req.params;
   try {    
@@ -103,4 +132,5 @@ module.exports = {
   getTransactions,
   createTransaction,  
   confirmTransaction,
+  getVa
 }
