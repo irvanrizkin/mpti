@@ -4,6 +4,7 @@ const vaHandler = require('../utils/generateVa');
 const { nanoid } = require('../config/nanoid.config');
 const getLimitedData = require('../utils/getTransactionLimitedData');
 const getVaHandler = require('../utils/getVa');
+const { default: axios } = require('axios');
 
 const createTransaction = async (req, res, next) => {
   const transactionId = `TRC-${nanoid(16)}`;  
@@ -111,7 +112,21 @@ const confirmTransaction = async (req, res, next) => {
       where:{
         transactionId
       }
-    })    
+    })
+    
+    if (transaction.notificationUrl) {
+      const res = await axios.post(transaction.notificationUrl, {
+        transactionId,
+        transactionStatus: 'paid'
+      }, {
+        headers: {
+          "Content-Type":"application/json",
+          "Accept":"application/json",
+          'Accept-Encoding': 'application/json'
+        },
+        validateStatus: false,
+      })
+    }
 
     const transactionData = getLimitedData(transaction);
 
