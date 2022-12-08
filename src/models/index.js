@@ -1,8 +1,8 @@
 const { Sequelize } = require('sequelize');
 const env = process.env;
 
-const sequelize = new Sequelize(env.DEV_DB_NAME, env.DEV_DB_USER, env.DEV_DB_PASS, {
-  host: env.DEV_DB_HOST,
+const sequelize = new Sequelize(env.MYSQLDATABASE, env.MYSQULUSER, env.MYSQLPASSWORD, {
+  host: env.MYSQLHOST,
   dialect: env.DEV_DB_DIALECT,
   operatorAliases: false,
 
@@ -18,5 +18,7 @@ const sequelize = new Sequelize(env.DEV_DB_NAME, env.DEV_DB_USER, env.DEV_DB_PAS
 const transaction = require('./transaction.model')(sequelize, Sequelize);
 
 module.exports = {
+    Sequelize,
+    sequelize,
     transaction
 }

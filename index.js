@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const db = require('./src/models');
 
 const app = express();
 
@@ -11,6 +12,8 @@ const transactionRoutes = require('./src/routes/transaction.route');
 const errorHandler = require('./src/utils/errorHandler');
 
 app.use(express.json());
+
+db.sequelize.sync();
 
 app.get('/', (_, res) => {
   res.json(
