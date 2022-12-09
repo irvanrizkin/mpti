@@ -113,20 +113,6 @@ const confirmTransaction = async (req, res, next) => {
         transactionId
       }
     })
-    
-    if (transaction.notificationUrl) {
-      const res = await axios.post(transaction.notificationUrl, {
-        transactionId,
-        transactionStatus: 'paid'
-      }, {
-        headers: {
-          "Content-Type":"application/json",
-          "Accept":"application/json",
-          'Accept-Encoding': 'application/json'
-        },
-        validateStatus: false,
-      })
-    }
 
     const transactionData = getLimitedData(transaction);
 
